@@ -1,16 +1,16 @@
 # from IPython.display import clear_output
 import random
 
-board = [' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
 test_board = ['#','X','O','X','O','X','O','X','O','X']
 
 def display_board(board):
     print(board[1] + '|' + board[2] + '|' + board[3])
     print('------')
-    print(board[3] + '|' + board[4] + '|' + board[5])
+    print(board[4] + '|' + board[5] + '|' + board[6])
     print('------')
-    print(board[4] + '|' + board[8] + '|' + board[9])
+    print(board[7] + '|' + board[8] + '|' + board[9])
 
 def player_input():
     marker = ''
@@ -28,15 +28,16 @@ def place_marker(board, marker, position):
     board[position] = marker
 
 def win_check(board, mark):
-    if board[0] == mark and board[1] == mark and board[2] == mark or board[0] == mark and board[5] == mark and board[9] == mark or board[2] == mark and board[5] == mark and board[7] == mark or board[0] == mark and board[4] == mark and board[7] == mark or board[1] == mark and board[5] == mark and board[8] == mark or board[2] == mark and board[6] == mark and board[9] == mark:
+    print(board, mark)
+    if board[1] == mark and board[2] == mark and board[3] == mark or board[1] == mark and board[5] == mark and board[9] == mark or board[3] == mark and board[5] == mark and board[7] == mark or board[1] == mark and board[4] == mark and board[7] == mark or board[2] == mark and board[5] == mark and board[8] == mark or board[3] == mark and board[6] == mark and board[9] == mark:
         return True
     return False
 
 def choose_first():
     random_start = random.randint(0,1)
     if random_start == 0:
-        return 'Player 1 start'
-    return 'Player 2 start'
+        return True
+    return False
 
 def space_check(board, position):
     if board[position] == ' ':
@@ -46,8 +47,8 @@ def space_check(board, position):
 
 def full_board_check(board):
     marked_position_counter = 0
-    for index in range(0, 9):
-        if index != ' ':
+    for index in range(1, 10):
+        if board[index] != ' ':
             marked_position_counter += 1
     if marked_position_counter == 9:
         return True
@@ -55,7 +56,7 @@ def full_board_check(board):
 
 def player_choice(board):
     choice = 'wrong'
-    choice_list = [f'{index}' for index in range(0, 9)]
+    choice_list = [f'{index}' for index in range(1, 10)]
     available = False
 
     while choice not in choice_list or available == False:
@@ -68,65 +69,63 @@ def player_choice(board):
             available = True
     
     return int(choice)
-    
-display_board(board)
-player1_marker, player2_marker = player_input()
-display_board(board)
-print(win_check(test_board, 'X'))
-print(full_board_check(test_board))
-print(player_choice(board))
 
 
-# display_board(test_board)
-# game_list = [0,1,2]
-# game_on = True
+def replay():
+    choice = 'wrong'
 
-# def display_game(game_list):
-#     print('Here is the current list: ')
-#     print(game_list)
+    while choice not in ['Y', 'N']:
+        choice = input('Play again? Press Y or N: ')
 
-# def position_choice():
-#     choice = 'wrong'
-
-#     while choice not in ['0', '1', '2']:
-#         choice = input('Pick a position (0, 1, 2): ')
-#         if choice not in ['0', '1', '2']:
-#             print('Sorry, invalid choice!')
-    
-#     return int(choice)
+        if choice not in ['Y', 'N']:
+            print('Please enter Y or N')
+        if choice == 'Y':
+            return True
+    return False
 
 
-# def replacement_choice(game_list, position):
-#     user_placemente = input('Type a string to place at position: ')
-#     game_list[position] = user_placemente
-#     return game_list
+print('Welcome to Tic Tac Toe!')
+gameon = True
+play = True
+player1 = True
+while gameon == True:
+    player1_marker, player2_marker = player_input()
+    random_pick = choose_first()
+    if random_pick == True:
+        print('Player 1 turn')
+    else:
+        print('Player 2 turn')
+        player1 = False
 
+    while play == True:
+        display_board(board)
 
+        if player1 == True:
+            print('Player 1 turn')
+            position = player_choice(board)
+            place_marker(board, player1_marker, position)
+            if win_check(board, player1_marker) == True:
+                print('Player 1 won!')
+                play = False
+           
+            player1 = False
+        else:
+            print('Player 2 turn')
+            position = player_choice(board)
+            place_marker(board, player2_marker, position)
+            if win_check(board, player2_marker) == True:
+                print('Player 2 won!')
+                play = False
+            player1 = True
 
+        if full_board_check(board) == True:
+            play = False
+            print('Game Over! Is a Draw!')
 
+    if replay() == False:
+            play = False
+            gameon = False
+    else:
+        play = True  
+        board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']             
 
-
-# def gameon_choice():
-#     choice = 'wrong'
-
-#     while choice not in ['Y', 'N']:
-#         choice = input('Keep playing? (Y or N) ')
-#         if choice not in ['Y', 'N']:
-#             print('Sorry, I dont understand, please choose Y or N!')
-#         if choice == 'Y':
-#             return True
-#         else:
-#             return False
-    
-#     return int(choice)
-
-# while game_on:
-#     display_game(game_list)
-
-#     position = position_choice()
-
-#     game_list = replacement_choice(game_list, position)
-
-#     display_game(game_list)
-
-#     game_on = gameon_choice()
