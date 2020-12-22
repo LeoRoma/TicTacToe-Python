@@ -3,7 +3,6 @@ import random
 
 board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
-test_board = ['#','X','O','X','O','X','O','X','O','X']
 
 def display_board(board):
     print(board[1] + '|' + board[2] + '|' + board[3])
@@ -16,7 +15,7 @@ def player_input():
     marker = ''
 
     while marker != 'O' and marker != 'X':
-        player1 = input('Player 1, please choose a mark: O or X: ')
+        player1 = input('Player 1, please choose a mark: O or X: ').upper()
         marker = player1
         if marker == 'X':
             player2 = 'O'
@@ -28,7 +27,6 @@ def place_marker(board, marker, position):
     board[position] = marker
 
 def win_check(board, mark):
-    print(board, mark)
     if board[1] == mark and board[2] == mark and board[3] == mark or board[1] == mark and board[5] == mark and board[9] == mark or board[3] == mark and board[5] == mark and board[7] == mark or board[1] == mark and board[4] == mark and board[7] == mark or board[2] == mark and board[5] == mark and board[8] == mark or board[3] == mark and board[6] == mark and board[9] == mark:
         return True
     return False
@@ -75,7 +73,7 @@ def replay():
     choice = 'wrong'
 
     while choice not in ['Y', 'N']:
-        choice = input('Play again? Press Y or N: ')
+        choice = input('Play again? Press Y or N: ').upper()
 
         if choice not in ['Y', 'N']:
             print('Please enter Y or N')
@@ -127,5 +125,5 @@ while gameon == True:
             gameon = False
     else:
         play = True  
-        board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']             
+        board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']            
 
