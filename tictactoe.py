@@ -1,16 +1,16 @@
 # from IPython.display import clear_output
 import random
 
-board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+board = [' ', '1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 
 test_board = ['#','X','O','X','O','X','O','X','O','X']
 
 def display_board(board):
-    print(board[0] + '|' + board[1] + '|' + board[2])
+    print(board[1] + '|' + board[2] + '|' + board[3])
     print('------')
     print(board[3] + '|' + board[4] + '|' + board[5])
     print('------')
-    print(board[7] + '|' + board[8] + '|' + board[9])
+    print(board[4] + '|' + board[8] + '|' + board[9])
 
 def player_input():
     marker = ''
@@ -38,10 +38,43 @@ def choose_first():
         return 'Player 1 start'
     return 'Player 2 start'
 
+def space_check(board, position):
+    if board[position] == ' ':
+        return True
+    return False
+
+
+def full_board_check(board):
+    marked_position_counter = 0
+    for index in range(0, 9):
+        if index != ' ':
+            marked_position_counter += 1
+    if marked_position_counter == 9:
+        return True
+    return False
+
+def player_choice(board):
+    choice = 'wrong'
+    choice_list = [f'{index}' for index in range(0, 9)]
+    available = False
+
+    while choice not in choice_list or available == False:
+        choice = input('Please choose a position from 1 to 9: ')
+        if choice.isdigit() == False or choice not in choice_list:
+            print('Sorry, invalid choice')
+        elif space_check(board, int(choice)) == False:
+            print('Sorry, position not available')
+        else:
+            available = True
+    
+    return int(choice)
+    
 display_board(board)
 player1_marker, player2_marker = player_input()
 display_board(board)
 print(win_check(test_board, 'X'))
+print(full_board_check(test_board))
+print(player_choice(board))
 
 
 # display_board(test_board)
